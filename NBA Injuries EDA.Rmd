@@ -2,14 +2,16 @@
 title: "Analysing NBA Player Injuries"
 author: "Jason Zivkovic"
 date: "`r Sys.Date()`"
-output: 
-  html_document: 
-    highlight: pygments
-    theme: spacelab
-    df_print: paged
-    number_sections: true
-    toc: true
+output:
+  word_document:
+    toc: yes
+  html_document:
     code_folding: hide
+    df_print: paged
+    highlight: pygments
+    number_sections: yes
+    theme: spacelab
+    toc: yes
 ---
 
 # Versions
@@ -622,17 +624,6 @@ library(ggraph)
 
 removed_words <- c("to", "from", "on", "in")
 
-
-# count_bigrams <- function(dataset) {
-#   dataset %>%
-#     unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
-#     separate(bigram, c("word1", "word2"), sep = " ") %>%
-#     filter(!word1 %in% stop_words$word,
-#            !word2 %in% stop_words$word) %>%
-#     count(word1, word2, sort = TRUE)
-# }
-
-
 count_bigrams <- function(dataset) {
   dataset %>%
     unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
@@ -664,7 +655,7 @@ injuryWords <- injuries %>%
   count_bigrams()
 
 injuryWords %>%
-  filter(n > 30) %>%
+  filter(!is.na(word1), n > 30) %>%
   visualize_bigrams()
 
 
